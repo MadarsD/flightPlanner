@@ -1,8 +1,8 @@
-package com.example.flightplanner.Controllers;
+package com.example.flightplanner.controllers;
 
-import com.example.flightplanner.HelperClasses.AddFlightRequest;
-import com.example.flightplanner.HelperClasses.Flight;
-import com.example.flightplanner.Services.FlightService;
+import com.example.flightplanner.helperClasses.AddFlightRequest;
+import com.example.flightplanner.helperClasses.Flight;
+import com.example.flightplanner.services.FlightService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

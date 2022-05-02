@@ -1,4 +1,4 @@
-package com.example.flightplanner.HelperClasses;
+package com.example.flightplanner.helperClasses;
 
 
 import javax.validation.Valid;

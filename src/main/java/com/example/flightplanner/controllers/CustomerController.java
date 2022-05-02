@@ -1,10 +1,10 @@
-package com.example.flightplanner.Controllers;
+package com.example.flightplanner.controllers;
 
-import com.example.flightplanner.HelperClasses.Airport;
-import com.example.flightplanner.HelperClasses.Flight;
-import com.example.flightplanner.HelperClasses.PageResult;
-import com.example.flightplanner.HelperClasses.SearchFlightsRequest;
-import com.example.flightplanner.Services.FlightService;
+import com.example.flightplanner.helperClasses.Airport;
+import com.example.flightplanner.helperClasses.Flight;
+import com.example.flightplanner.helperClasses.PageResult;
+import com.example.flightplanner.helperClasses.SearchFlightsRequest;
+import com.example.flightplanner.services.FlightService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

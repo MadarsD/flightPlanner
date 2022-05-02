@@ -1,12 +1,11 @@
-package com.example.flightplanner.Services;
+package com.example.flightplanner.repositories;
 
-import com.example.flightplanner.HelperClasses.AddFlightRequest;
-import com.example.flightplanner.HelperClasses.Airport;
-import com.example.flightplanner.HelperClasses.Flight;
-import com.example.flightplanner.HelperClasses.SearchFlightsRequest;
-import com.example.flightplanner.Repositories.FlightRepository;
+import com.example.flightplanner.helperClasses.AddFlightRequest;
+import com.example.flightplanner.helperClasses.Airport;
+import com.example.flightplanner.helperClasses.Flight;
+import com.example.flightplanner.helperClasses.SearchFlightsRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -15,17 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Service
-public class FlightService {
+@Repository
+public class FlightRepository {
 
+    private final List<Flight> flights = new ArrayList<>();
     private int flightId = 1;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-    FlightRepository flightRepository;
-
-    public FlightService(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-    }
 
     public synchronized Flight addFlight(AddFlightRequest flightRequest) {
 
@@ -50,7 +44,7 @@ public class FlightService {
         if (flightAlreadyExists(flight)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         } else {
-            flightRepository.flights.add(flight);
+            this.flights.add(flight);
             flightId++;
         }
 
@@ -58,11 +52,11 @@ public class FlightService {
     }
 
     public synchronized void deleteFlight(int id) {
-        flightRepository.flights.removeIf(flight -> flight.getId() == id);
+        this.flights.removeIf(flight -> flight.getId() == id);
     }
 
     public Flight fetchFlightById(int id) {
-        return flightRepository.flights.stream().filter(flight -> flight.getId() == id).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return this.flights.stream().filter(flight -> flight.getId() == id).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public synchronized List<Flight> searchFlight(SearchFlightsRequest request) {
@@ -71,7 +65,7 @@ public class FlightService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        return flightRepository.flights.stream()
+        return this.flights.stream()
                 .filter(flight -> flight.getFrom().getAirport().equals(request.getFrom())
                         && flight.getTo().getAirport().equals(request.getTo())
                         && flight.getDepartureTime().toLocalDate().equals(request.getDepartureDate()))
@@ -82,18 +76,23 @@ public class FlightService {
 
         List<Airport> airports = new ArrayList<>();
         String phrase = name.toUpperCase(Locale.ROOT).trim();
-        airports.addAll(flightRepository.flights.stream().map(Flight::getFrom).toList());
-        airports.addAll(flightRepository.flights.stream().map(Flight::getTo).toList());
+        airports.addAll(this.flights.stream().map(Flight::getFrom).toList());
+        airports.addAll(this.flights.stream().map(Flight::getTo).toList());
 
         return airports.stream()
                 .filter(airport -> airport.getAirport().toUpperCase(Locale.ROOT).contains(phrase)
                         || airport.getCity().toUpperCase(Locale.ROOT).contains(phrase)
                         || airport.getCountry().toUpperCase(Locale.ROOT).contains(phrase)).toList();
+    }
 
+    public void clearFlights() {
+        if (!this.flights.isEmpty()) {
+            this.flights.clear();
+        }
     }
 
     public boolean flightAlreadyExists(Flight flight) {
-        return flightRepository.flights.contains(flight);
+        return this.flights.contains(flight);
     }
 
     public boolean isNotValidRequest(AddFlightRequest flightRequest) {
