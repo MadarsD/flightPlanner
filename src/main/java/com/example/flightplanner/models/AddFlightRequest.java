@@ -1,12 +1,13 @@
-package com.example.flightplanner.helperClasses;
-
+package com.example.flightplanner.models;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+
 public class AddFlightRequest {
+
     @Valid
     @NotNull
     private Airport from;

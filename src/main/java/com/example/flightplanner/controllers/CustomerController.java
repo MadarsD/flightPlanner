@@ -1,9 +1,9 @@
 package com.example.flightplanner.controllers;
 
-import com.example.flightplanner.helperClasses.Airport;
-import com.example.flightplanner.helperClasses.Flight;
-import com.example.flightplanner.helperClasses.PageResult;
-import com.example.flightplanner.helperClasses.SearchFlightsRequest;
+import com.example.flightplanner.models.Airport;
+import com.example.flightplanner.models.Flight;
+import com.example.flightplanner.models.PageResult;
+import com.example.flightplanner.models.SearchFlightsRequest;
 import com.example.flightplanner.services.FlightService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class CustomerController {
 
-    FlightService flightService;
+    private FlightService flightService;
 
     public CustomerController(FlightService flightService) {
         this.flightService = flightService;

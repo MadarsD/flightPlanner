@@ -15,8 +15,8 @@ public class TestController {
     }
 
     @RequestMapping("/clear")
-    public void clearFlights(){
-      flightService.clearFlights();
+    public void clearFlights() {
+        flightService.clearFlights();
     }
 
 }

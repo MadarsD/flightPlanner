@@ -1,19 +1,33 @@
-package com.example.flightplanner.helperClasses;
+package com.example.flightplanner.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueFlight",
+        columnNames = {"from_airport", "to_airport", "carrier", "departureTime", "arrivalTime"})})
 public class Flight {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+    @ManyToOne()
+    @JoinColumn(name = "from_airport", nullable = false)
     private Airport from;
+    @ManyToOne()
+    @JoinColumn(name = "to_airport", nullable = false)
     private Airport to;
     private String carrier;
     @JsonFormat(pattern = "yyy-MM-dd HH:mm")
     private LocalDateTime departureTime;
     @JsonFormat(pattern = "yyy-MM-dd HH:mm")
     private LocalDateTime arrivalTime;
+
+
+    public Flight() {
+    }
 
 
     public Flight(int id, Airport from, Airport to, String carrier, LocalDateTime departureTime, LocalDateTime arrivalTime) {
@@ -24,6 +38,15 @@ public class Flight {
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
     }
+
+    public Flight(Airport from, Airport to, String carrier, LocalDateTime departureTime, LocalDateTime arrivalTime) {
+        this.from = from;
+        this.to = to;
+        this.carrier = carrier;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+    }
+
 
     public int getId() {
         return id;

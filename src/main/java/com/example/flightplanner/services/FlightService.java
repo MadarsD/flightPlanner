@@ -1,46 +1,24 @@
 package com.example.flightplanner.services;
 
-import com.example.flightplanner.helperClasses.AddFlightRequest;
-import com.example.flightplanner.helperClasses.Airport;
-import com.example.flightplanner.helperClasses.Flight;
-import com.example.flightplanner.helperClasses.SearchFlightsRequest;
-import com.example.flightplanner.repositories.FlightRepository;
-import org.springframework.stereotype.Service;
+import com.example.flightplanner.models.AddFlightRequest;
+import com.example.flightplanner.models.Airport;
+import com.example.flightplanner.models.Flight;
+import com.example.flightplanner.models.SearchFlightsRequest;
 
 import java.util.List;
 
 
-@Service
-public class FlightService {
+public interface FlightService {
 
-    private FlightRepository flightRepository;
+    Flight addFlight(AddFlightRequest flightRequest);
 
-    public FlightService(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-    }
+    void deleteFlight(int id);
 
-    public synchronized Flight addFlight(AddFlightRequest flightRequest) {
-        return flightRepository.addFlight(flightRequest);
-    }
+    Flight fetchFlightById(int id);
 
-    public synchronized void deleteFlight(int id) {
-        flightRepository.deleteFlight(id);
-    }
+    List<Flight> searchFlight(SearchFlightsRequest request);
 
-    public Flight fetchFlightById(int id) {
-        return flightRepository.fetchFlightById(id);
-    }
+    List<Airport> searchAirports(String name);
 
-    public synchronized List<Flight> searchFlight(SearchFlightsRequest request) {
-        return flightRepository.searchFlight(request);
-    }
-
-    public List<Airport> searchAirports(String name) {
-        return flightRepository.searchAirports(name);
-    }
-
-    public void clearFlights() {
-        flightRepository.clearFlights();
-    }
-
+    void clearFlights();
 }

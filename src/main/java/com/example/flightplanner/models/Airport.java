@@ -1,15 +1,22 @@
-package com.example.flightplanner.helperClasses;
+package com.example.flightplanner.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Locale;
 import java.util.Objects;
 
+@Entity
 public class Airport {
+
     @NotBlank
     private String country;
     @NotBlank
     private String city;
+    @Id
     @NotBlank
     private String airport;
+
+    public Airport(){}
 
     public Airport(String country, String city, String airport) {
         this.country = country;
@@ -38,7 +45,7 @@ public class Airport {
     }
 
     public void setAirport(String airport) {
-        this.airport = airport;
+        this.airport = airport.toUpperCase(Locale.ROOT);
     }
 
     @Override
@@ -62,4 +69,5 @@ public class Airport {
                 ", airport='" + airport + '\'' +
                 '}';
     }
+
 }

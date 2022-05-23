@@ -1,54 +1,34 @@
 package com.example.flightplanner.repositories;
 
-import com.example.flightplanner.helperClasses.AddFlightRequest;
-import com.example.flightplanner.helperClasses.Airport;
-import com.example.flightplanner.helperClasses.Flight;
-import com.example.flightplanner.helperClasses.SearchFlightsRequest;
+import com.example.flightplanner.models.Airport;
+import com.example.flightplanner.models.Flight;
+import com.example.flightplanner.models.SearchFlightsRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 @Repository
-public class FlightRepository {
+public class FlightInMemoryRepository {
 
     private final List<Flight> flights = new ArrayList<>();
     private int flightId = 1;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public synchronized Flight addFlight(AddFlightRequest flightRequest) {
-
-        if (isNotValidRequest(flightRequest)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
-        Flight flight = new Flight(
-                flightId,
-                flightRequest.getFrom(),
-                flightRequest.getTo(),
-                flightRequest.getCarrier(),
-                LocalDateTime.parse(flightRequest.getDepartureTime(), formatter),
-                LocalDateTime.parse(flightRequest.getArrivalTime(), formatter)
-        );
-
-
-        if (isInvalidDates(flight)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public synchronized Flight addFlight(Flight flight) {
 
         if (flightAlreadyExists(flight)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         } else {
+            flight.setId(flightId);
             this.flights.add(flight);
             flightId++;
         }
 
         return flight;
+
     }
 
     public synchronized void deleteFlight(int id) {
@@ -95,16 +75,8 @@ public class FlightRepository {
         return this.flights.contains(flight);
     }
 
-    public boolean isNotValidRequest(AddFlightRequest flightRequest) {
-        return flightRequest.getFrom().getCity().toLowerCase(Locale.ROOT).equals(flightRequest.getTo().getCity().toLowerCase(Locale.ROOT));
-    }
-
     public boolean isNotValidSearchRequest(SearchFlightsRequest request) {
         return request.getFrom().toLowerCase(Locale.ROOT).equals(request.getTo().toLowerCase(Locale.ROOT));
-    }
-
-    public boolean isInvalidDates(Flight flight) {
-        return flight.getDepartureTime().isAfter(flight.getArrivalTime()) || flight.getDepartureTime().isEqual(flight.getArrivalTime());
     }
 
 }

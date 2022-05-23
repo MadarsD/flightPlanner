@@ -1,4 +1,4 @@
-package com.example.flightplanner.helperClasses;
+package com.example.flightplanner.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

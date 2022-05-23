@@ -1,18 +1,19 @@
 package com.example.flightplanner.controllers;
 
-import com.example.flightplanner.helperClasses.AddFlightRequest;
-import com.example.flightplanner.helperClasses.Flight;
+import com.example.flightplanner.models.AddFlightRequest;
+import com.example.flightplanner.models.Flight;
 import com.example.flightplanner.services.FlightService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+
 @RestController
 @RequestMapping("/admin-api")
 public class AdminController {
 
-    FlightService flightService;
+    private FlightService flightService;
 
     public AdminController(FlightService flightService) {
         this.flightService = flightService;
@@ -33,4 +34,5 @@ public class AdminController {
     public void deleteFlight(@PathVariable("id") int id) {
         flightService.deleteFlight(id);
     }
+
 }
