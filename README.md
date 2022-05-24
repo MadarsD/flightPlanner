@@ -1,6 +1,6 @@
-# Flight Planner
+# Flight Planner (close to finish)
 
-Almost finished REST API using Java, Spring Boot, PostgreSQL/H2. 
+REST API using Java, Spring Boot, PostgreSQL/H2. 
 It will have ability to switch between in-memory app which uses simple lists to save entries or app which connects to database.
 
 
